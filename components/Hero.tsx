@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import { useRef } from "react";
 import { FaGithub as Github, FaInstagram as Instagram } from "react-icons/fa6";
 import { HeroBackground } from "@/components/HeroBackground";
@@ -19,7 +19,7 @@ export function Hero() {
   const yTextScroll = useTransform(scrollYProgress, [0, 1], [0, 300]);
   const opacityText = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -30,7 +30,7 @@ export function Hero() {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { y: 40, opacity: 0, filter: "blur(10px)" },
     visible: { 
       y: 0, 
