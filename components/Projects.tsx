@@ -23,11 +23,11 @@ const projects = [
   },
   {
     id: "nova",
-    title: "Nova Engine",
-    category: "Creative Development",
+    title: "Website Praktikum",
+    category: "Website",
     year: "2026",
-    description: "A high-performance animation engine designed specifically for modern cinematic web experiences, utilizing WebGL.",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop",
+    description: "Sebuah platform cerdas yang dibangun dengan Supabase dan API Gemini & Grok untuk mengotomatiskan pemilihan tema dan logika guna mencegah plagiarisme dalam laporan akademik.",
+    image: "https://res.cloudinary.com/dvpm3w0ed/image/upload/v1780323360/Cuplikan_layar_2026-06-01_211542_j5ymmy.png",
   },
   {
     id: "lumina",
