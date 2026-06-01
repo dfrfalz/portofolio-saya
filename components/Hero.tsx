@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform, Variants } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { FaGithub as Github, FaInstagram as Instagram } from "react-icons/fa6";
 import { HeroBackground } from "@/components/HeroBackground";
 import { PremiumProfileImage } from "@/components/ui/PremiumProfileImage";
@@ -9,15 +9,21 @@ import Link from "next/link";
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
   
-  // Scroll Parallax
+  // Scroll-linked fade out
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
 
-  const yTextScroll = useTransform(scrollYProgress, [0, 1], [0, 300]);
-  const opacityText = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  // Desktop: parallax Y + fade | Mobile: only fade (no jerky Y movement)
+  const yTextScroll = useTransform(scrollYProgress, [0, 1], [0, isMobile ? 0 : 300]);
+  const opacityText = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -47,7 +53,7 @@ export function Hero() {
     >
       <HeroBackground />
 
-      {/* Main Content */}
+      {/* Main Content — smooth fade on scroll, no Y jerk on mobile */}
       <motion.div
         style={{ 
           y: yTextScroll,
