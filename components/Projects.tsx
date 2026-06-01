@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -46,13 +47,13 @@ const projects = [
   }
 ];
 
-export function Projects() {
+// Desktop: GSAP horizontal scroll
+function DesktopProjects() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
 
-  // Critical: Sync Lenis smooth scroll with GSAP ScrollTrigger on every frame
-  useLenis((lenis) => {
+  useLenis(() => {
     ScrollTrigger.update();
   });
 
@@ -61,25 +62,21 @@ export function Projects() {
     const section = sectionRef.current;
     if (!slider || !section) return;
 
-    const getScrollAmount = () => {
-      return slider.scrollWidth - window.innerWidth;
-    };
+    const getScrollAmount = () => slider.scrollWidth - window.innerWidth;
 
-    // Main horizontal scroll tween
     gsap.to(slider, {
       x: () => -getScrollAmount(),
       ease: "none",
       scrollTrigger: {
         trigger: section,
         pin: true,
-        pinSpacing: true, // Explicitly create space so Contact doesn't overlap
+        pinSpacing: true,
         scrub: 1,
         end: () => "+=" + getScrollAmount(),
         invalidateOnRefresh: true,
       },
     });
 
-    // Progress bar animation
     if (progressRef.current) {
       gsap.to(progressRef.current, {
         scaleX: 1,
@@ -93,67 +90,56 @@ export function Projects() {
       });
     }
 
-    // Force ScrollTrigger to refresh after everything is set up
-    // This tells Lenis the new page height
     ScrollTrigger.refresh();
   }, { scope: sectionRef });
 
   return (
     <section ref={sectionRef} id="work" className="relative w-full h-screen bg-black overflow-hidden">
-      
-      {/* Global Section Header */}
-      <div className="absolute top-6 left-6 md:top-12 md:left-12 z-50 pointer-events-none mix-blend-difference">
-        <h2 className="text-sm md:text-base uppercase tracking-[0.3em] font-semibold text-white/70">
+      <div className="absolute top-12 left-12 z-50 pointer-events-none mix-blend-difference">
+        <h2 className="text-base uppercase tracking-[0.3em] font-semibold text-white/70">
           Selected Works
         </h2>
       </div>
 
-      {/* Horizontal Slider Track */}
       <div ref={sliderRef} className="flex h-screen will-change-transform">
         {projects.map((project, i) => (
           <div 
             key={project.id} 
-            className="project-panel relative w-screen h-screen flex-shrink-0 flex items-center justify-center p-4 md:p-12 overflow-hidden group"
+            className="project-panel relative w-screen h-screen flex-shrink-0 flex items-center justify-center p-12 overflow-hidden group"
           >
-            {/* Premium Panel Container */}
-            <div className="relative w-full h-[85vh] md:h-[90vh] rounded-[2rem] overflow-hidden bg-black/50 border border-white/5">
-              
-              {/* Image */}
+            <div className="relative w-full h-[90vh] rounded-[2rem] overflow-hidden bg-black/50 border border-white/5">
               <div className="absolute inset-0 w-full h-full overflow-hidden">
                 <div className="project-image w-full h-full scale-110">
                   <img 
                     src={project.image} 
                     alt={project.title}
-                    className="w-full h-full object-cover opacity-60 md:opacity-50 transition-opacity duration-1000 group-hover:opacity-70"
+                    className="w-full h-full object-cover opacity-50 transition-opacity duration-1000 group-hover:opacity-70"
                   />
                 </div>
-                {/* Cinematic Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent md:w-1/2 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent w-1/2 pointer-events-none" />
               </div>
               
-              {/* Content Overlay */}
-              <div className="absolute inset-0 p-8 md:p-20 flex flex-col justify-end md:justify-center z-10">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8">
-                  
+              <div className="absolute inset-0 p-20 flex flex-col justify-center z-10">
+                <div className="flex flex-row justify-between items-end w-full gap-8">
                   <div className="max-w-4xl">
                     <div className="flex items-center gap-4 mb-6">
                       <span className="w-12 h-[1px] bg-white/30" />
-                      <span className="text-xs md:text-sm uppercase tracking-[0.3em] text-white/70 font-medium">
+                      <span className="text-sm uppercase tracking-[0.3em] text-white/70 font-medium">
                         0{i + 1} // {project.category}
                       </span>
                     </div>
                     
-                    <h3 className="text-6xl sm:text-7xl md:text-[9rem] font-bold tracking-tighter text-white leading-[0.9] mb-8 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/50 transition-all duration-700">
+                    <h3 className="text-[9rem] font-bold tracking-tighter text-white leading-[0.9] mb-8 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/50 transition-all duration-700">
                       {project.title}
                     </h3>
                     
-                    <p className="text-lg md:text-2xl text-white/60 font-light leading-relaxed max-w-2xl">
+                    <p className="text-2xl text-white/60 font-light leading-relaxed max-w-2xl">
                       {project.description}
                     </p>
                   </div>
 
-                  <a href="#" className="hidden md:flex w-32 h-32 rounded-full border border-white/20 bg-white/5 backdrop-blur-md items-center justify-center hover:bg-white hover:text-black hover:scale-105 transition-all duration-500 overflow-hidden relative group/btn">
+                  <a href="#" className="flex w-32 h-32 rounded-full border border-white/20 bg-white/5 backdrop-blur-md items-center justify-center hover:bg-white hover:text-black hover:scale-105 transition-all duration-500 overflow-hidden relative group/btn">
                     <div className="absolute inset-0 bg-white translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500 ease-[0.16,1,0.3,1]" />
                     <ArrowUpRight size={40} className="relative z-10 stroke-1" />
                   </a>
@@ -164,8 +150,7 @@ export function Projects() {
         ))}
       </div>
       
-      {/* Scroll Progress Bar */}
-      <div className="absolute bottom-6 md:bottom-12 left-1/2 -translate-x-1/2 w-64 md:w-96 h-[2px] bg-white/10 overflow-hidden z-50">
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 w-96 h-[2px] bg-white/10 overflow-hidden z-50">
         <div 
           ref={progressRef}
           className="h-full bg-white origin-left scale-x-0 will-change-transform"
@@ -173,4 +158,77 @@ export function Projects() {
       </div>
     </section>
   );
+}
+
+// Mobile: Simple vertical card layout (no GSAP, no lag)
+function MobileProjects() {
+  return (
+    <section id="work" className="relative py-20 px-4 bg-black">
+      <div className="mb-10">
+        <h2 className="text-sm uppercase tracking-[0.3em] font-semibold text-white/70">
+          Selected Works
+        </h2>
+      </div>
+
+      <div className="flex flex-col gap-6">
+        {projects.map((project, i) => (
+          <motion.div
+            key={project.id}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5, delay: i * 0.1 }}
+            className="relative rounded-2xl overflow-hidden border border-white/5 group"
+          >
+            {/* Image */}
+            <div className="relative w-full aspect-[4/3] overflow-hidden">
+              <img 
+                src={project.image} 
+                alt={project.title}
+                className="w-full h-full object-cover opacity-70"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+            </div>
+
+            {/* Content */}
+            <div className="absolute bottom-0 left-0 right-0 p-5">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-6 h-[1px] bg-white/30" />
+                <span className="text-[0.6rem] uppercase tracking-[0.2em] text-white/60 font-medium">
+                  0{i + 1} // {project.category}
+                </span>
+              </div>
+              
+              <h3 className="text-2xl font-bold tracking-tight text-white mb-2">
+                {project.title}
+              </h3>
+              
+              <p className="text-sm text-white/50 font-light leading-relaxed line-clamp-2">
+                {project.description}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function Projects() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setIsMobile(window.innerWidth < 768);
+
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  if (!mounted) return null;
+
+  return isMobile ? <MobileProjects /> : <DesktopProjects />;
 }
