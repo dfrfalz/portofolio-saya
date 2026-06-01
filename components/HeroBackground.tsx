@@ -5,16 +5,18 @@ import { useEffect, useState } from "react";
 
 export function HeroBackground() {
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    setIsMobile(window.innerWidth < 768);
   }, []);
 
   if (!mounted) return null;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 bg-background">
-      {/* Aurora Gradients */}
+      {/* Aurora Gradients — smaller on mobile */}
       <motion.div
         animate={{
           scale: [1, 1.2, 1],
@@ -22,7 +24,7 @@ export function HeroBackground() {
           rotate: [0, 90, 0],
         }}
         transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-primary/20 blur-[120px] mix-blend-screen"
+        className="absolute -top-[20%] -left-[10%] w-[40vw] md:w-[50vw] h-[40vw] md:h-[50vw] rounded-full bg-primary/20 blur-[80px] md:blur-[120px] mix-blend-screen"
       />
       <motion.div
         animate={{
@@ -31,7 +33,7 @@ export function HeroBackground() {
           rotate: [0, -90, 0],
         }}
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        className="absolute top-[20%] -right-[10%] w-[60vw] h-[60vw] rounded-full bg-indigo-500/10 blur-[120px] mix-blend-screen"
+        className="absolute top-[20%] -right-[10%] w-[50vw] md:w-[60vw] h-[50vw] md:h-[60vw] rounded-full bg-indigo-500/10 blur-[80px] md:blur-[120px] mix-blend-screen"
       />
       
       {/* Dynamic Grid Background */}
@@ -39,8 +41,8 @@ export function HeroBackground() {
         className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_10%,transparent_100%)]" 
       />
 
-      {/* Floating Particles */}
-      {Array.from({ length: 20 }).map((_, i) => {
+      {/* Floating Particles — only 6 on mobile, 20 on desktop */}
+      {Array.from({ length: isMobile ? 6 : 20 }).map((_, i) => {
         const size = Math.random() * 4 + 1;
         const initialX = Math.random() * 100;
         const initialY = Math.random() * 100;
