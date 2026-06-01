@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform, Variants } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import { FaGithub as Github, FaInstagram as Instagram } from "react-icons/fa6";
 import { HeroBackground } from "@/components/HeroBackground";
 import { PremiumProfileImage } from "@/components/ui/PremiumProfileImage";
@@ -9,11 +9,6 @@ import Link from "next/link";
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-  }, []);
   
   // Scroll-linked fade out
   const { scrollYProgress } = useScroll({
@@ -21,8 +16,8 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
 
-  // Desktop: parallax Y + fade | Mobile: only fade (no jerky Y movement)
-  const yTextScroll = useTransform(scrollYProgress, [0, 1], [0, isMobile ? 0 : 300]);
+  // Desktop parallax Y calculation (applied via CSS variable so no hydration mismatch on mobile)
+  const yTextScroll = useTransform(scrollYProgress, [0, 1], [0, 300]);
   const opacityText = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   const containerVariants: Variants = {
@@ -53,16 +48,17 @@ export function Hero() {
     >
       <HeroBackground />
 
-      {/* Main Content — smooth fade on scroll, no Y jerk on mobile */}
+      {/* Main Content — smooth fade on scroll everywhere, Y parallax only on desktop */}
       <motion.div
         style={{ 
-          y: yTextScroll,
-          opacity: opacityText 
-        }}
+          opacity: opacityText,
+          // Use CSS variable for Y translation to avoid hydration jumps
+          "--y-parallax": yTextScroll 
+        } as any}
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between text-center md:text-left mt-16 md:mt-12 gap-8 md:gap-12"
+        className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between text-center md:text-left mt-16 md:mt-12 gap-8 md:gap-12 md:[transform:translateY(calc(var(--y-parallax)*1px))]"
       >
         <div className="flex flex-col items-center md:items-start max-w-4xl">
           {/* Mobile Profile Image */}
