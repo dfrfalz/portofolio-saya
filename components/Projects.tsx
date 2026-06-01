@@ -15,11 +15,11 @@ if (typeof window !== "undefined") {
 const projects = [
   {
     id: "aetheria",
-    title: "Aetheria",
-    category: "Web3 Experience",
+    title: "Lost Assistant WhatsAap",
+    category: "Automation",
     year: "2025",
-    description: "A breathtaking immersive web experience bridging the physical and digital realms through generative art and real-time 3D rendering.",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
+    description: "Sistem otomatisasi WhatsApp yang andal yang dibangun dengan Node.js untuk menyederhanakan komunikasi dan keterlibatan pengguna.",
+    image: "https://res.cloudinary.com/dvpm3w0ed/image/upload/v1780322491/Cuplikan_layar_2026-06-01_210113_kgyrsi.png",
   },
   {
     id: "nova",
@@ -103,15 +103,15 @@ function DesktopProjects() {
 
       <div ref={sliderRef} className="flex h-screen will-change-transform">
         {projects.map((project, i) => (
-          <div 
-            key={project.id} 
+          <div
+            key={project.id}
             className="project-panel relative w-screen h-screen flex-shrink-0 flex items-center justify-center p-12 overflow-hidden group"
           >
             <div className="relative w-full h-[90vh] rounded-[2rem] overflow-hidden bg-black/50 border border-white/5">
               <div className="absolute inset-0 w-full h-full overflow-hidden">
                 <div className="project-image w-full h-full scale-110">
-                  <img 
-                    src={project.image} 
+                  <img
+                    src={project.image}
                     alt={project.title}
                     className="w-full h-full object-cover opacity-50 transition-opacity duration-1000 group-hover:opacity-70"
                   />
@@ -119,7 +119,7 @@ function DesktopProjects() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent w-1/2 pointer-events-none" />
               </div>
-              
+
               <div className="absolute inset-0 p-20 flex flex-col justify-center z-10">
                 <div className="flex flex-row justify-between items-end w-full gap-8">
                   <div className="max-w-4xl">
@@ -129,11 +129,11 @@ function DesktopProjects() {
                         0{i + 1} // {project.category}
                       </span>
                     </div>
-                    
+
                     <h3 className="text-[9rem] font-bold tracking-tighter text-white leading-[0.9] mb-8 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/50 transition-all duration-700">
                       {project.title}
                     </h3>
-                    
+
                     <p className="text-2xl text-white/60 font-light leading-relaxed max-w-2xl">
                       {project.description}
                     </p>
@@ -149,9 +149,9 @@ function DesktopProjects() {
           </div>
         ))}
       </div>
-      
+
       <div className="absolute bottom-12 left-1/2 -translate-x-1/2 w-96 h-[2px] bg-white/10 overflow-hidden z-50">
-        <div 
+        <div
           ref={progressRef}
           className="h-full bg-white origin-left scale-x-0 will-change-transform"
         />
@@ -182,8 +182,8 @@ function MobileProjects() {
           >
             {/* Image */}
             <div className="relative w-full aspect-[4/3] overflow-hidden">
-              <img 
-                src={project.image} 
+              <img
+                src={project.image}
                 alt={project.title}
                 className="w-full h-full object-cover opacity-70"
                 loading="lazy"
@@ -199,11 +199,11 @@ function MobileProjects() {
                   0{i + 1} // {project.category}
                 </span>
               </div>
-              
+
               <h3 className="text-2xl font-bold tracking-tight text-white mb-2">
                 {project.title}
               </h3>
-              
+
               <p className="text-sm text-white/50 font-light leading-relaxed line-clamp-2">
                 {project.description}
               </p>
